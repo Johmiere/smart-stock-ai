@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Suggested Purchase Orders · Smart Stock AI</title><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/demo.css"><link rel="stylesheet" href="/assets/css/workspace.css?v=light-workspace-1"><link rel="stylesheet" href="/assets/css/mobile-orders.css?v=1"><script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="reorder">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+<div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div><div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div><nav class="menu" aria-label="Main navigation"><a class="menu-item" href="/dashboard.html">Dashboard</a><a class="menu-item" href="/products.html">Product Maintenance</a><a class="menu-item" href="/stock-history.html">Stock History</a><a class="menu-item" href="/sales.html">Sales Transactions</a><a class="menu-item" href="/low-stock.html">Low Stock Alerts</a><a class="menu-item" href="/reports.html">Reports &amp; AI</a><a class="menu-item" href="/users.html">User Management</a><a class="menu-item active" href="/reorder.html" aria-current="page">Suggested purchase orders</a></nav></aside><main class="main-content" id="main-content" tabindex="-1">
+<header class="topbar"><div><h2>Suggested purchase orders</h2><p id="reorder-branch">Store purchase planning</p></div><button class="btn btn-logout" data-logout>Logout</button></header>
+<p id="page-message" class="notice" role="status"></p>
+<div id="reorder-skeleton" class="orders-grid orders-skeleton" aria-hidden="true"><div></div><div></div><div></div></div>
+<div id="reorder-workspace" hidden>
+  <section class="panel-card orders-intro">
+    <div>
+      <span class="orders-ai-mark"><span aria-hidden="true">✦</span> AI reorder</span>
+      <h3>Plan your reorders</h3>
+      <p class="muted-text">Review days of stock left and suggested quantities before ordering from suppliers.</p>
+    </div>
+    <button id="reorder-generate" type="button" class="btn btn-primary">Create suggested drafts</button>
+  </section>
+  <section class="orders-section" aria-labelledby="pending-orders-heading">
+    <div class="orders-section-header"><div><h3 id="pending-orders-heading" tabindex="-1">Pending drafts</h3><p class="muted-text">Review and approve drafts individually.</p></div><span id="reorder-pending-count" class="orders-count" aria-label="Pending drafts"></span></div>
+    <div id="reorder-drafts"></div>
+  </section>
+  <section class="orders-section" aria-labelledby="forecast-orders-heading">
+    <div class="orders-section-header orders-browse-header">
+      <div><h3 id="forecast-orders-heading">Stock and forecasts</h3><p class="muted-text">Select <strong>Why?</strong> to see demand and lead time.</p></div>
+      <div class="orders-search"><label for="reorder-search">Find an item</label><input id="reorder-search" type="search" placeholder="Item, SKU, or supplier"></div>
+    </div>
+    <div id="reorder-products"></div>
+  </section>
+  <details class="panel-card orders-history">
+    <summary>Reviewed drafts <span id="reorder-review-count" class="orders-count"></span></summary>
+    <div id="reorder-reviewed"></div>
+  </details>
+  <details class="panel-card orders-history">
+    <summary>Decision history</summary>
+    <div id="reorder-audit" class="table-responsive"></div>
+  </details>
+  <div id="reorder-review-bar" class="orders-review-bar" hidden>
+    <p><strong id="reorder-review-bar-count"></strong><span>Ready for review</span></p>
+    <button id="reorder-jump" type="button" class="btn btn-primary">Review drafts</button>
+  </div>
+</div>
+<dialog id="reorder-detail" class="orders-sheet" aria-labelledby="reorder-detail-name">
+  <div class="orders-sheet-inner">
+    <header class="orders-sheet-header">
+      <div><span class="orders-ai-mark"><span aria-hidden="true">✦</span> Forecast evidence</span><h3 id="reorder-detail-name" tabindex="-1"></h3></div>
+      <button type="button" class="btn btn-secondary" data-orders-close aria-label="Close forecast evidence">Close</button>
+    </header>
+    <p id="reorder-explanation" class="orders-reason"></p>
+    <p id="reorder-detail-message" class="notice" role="status"></p>
+    <section aria-labelledby="reorder-chart-heading">
+      <div class="orders-section-header">
+        <div><h4 id="reorder-chart-heading">Demand forecast</h4><p id="reorder-forecast-note" class="muted-text"></p></div>
+        <div class="orders-period" role="group" aria-label="Forecast period">
+          <button class="btn" type="button" data-forecast-days="7" aria-pressed="true">7 days</button>
+          <button class="btn" type="button" data-forecast-days="30" aria-pressed="false">30 days</button>
+        </div>
+      </div>
+      <figure id="reorder-chart-figure" class="orders-chart-figure" hidden>
+        <canvas id="reorder-chart" role="img" aria-describedby="reorder-forecast-note" aria-label="Daily forecast line with prediction range when available"></canvas>
+        <figcaption><span><i class="orders-legend-line" aria-hidden="true"></i> <span id="reorder-legend-median">P50 median</span></span><span id="reorder-legend-range"><i class="orders-legend-range" aria-hidden="true"></i> P10–P90 range</span></figcaption>
+      </figure>
+      <details class="orders-detail-table"><summary>Daily forecast data</summary><div id="reorder-band" class="table-responsive"></div></details>
+    </section>
+    <form id="reorder-supplier" class="orders-supplier">
+      <h4>Supplier settings</h4>
+      <div><label for="supplier-name">Supplier name</label><input id="supplier-name" maxlength="100" required></div>
+      <div><label for="supplier-lead">Lead time (days)</label><input id="supplier-lead" type="number" min="1" max="60" required></div>
+      <button class="btn btn-secondary" type="submit">Save supplier settings</button>
+    </form>
+  </div>
+</dialog>
+<dialog id="reorder-review-dialog" class="orders-sheet" aria-labelledby="reorder-review-title">
+  <div class="orders-sheet-inner">
+    <header class="orders-sheet-header"><div><h3 id="reorder-review-title"></h3><p id="reorder-reviewing" class="muted-text"></p></div><button type="button" class="btn btn-secondary" data-orders-close>Cancel</button></header>
+    <form id="reorder-review" class="orders-review-form">
+      <p id="reorder-review-help" class="muted-text"></p>
+      <p id="reorder-review-message" class="notice" role="status"></p>
+      <div id="review-quantity-field" hidden><label for="review-quantity">New quantity</label><input id="review-quantity" type="number" min="1" max="1000000"></div>
+      <div><label for="review-note" id="review-note-label">Decision note</label><textarea id="review-note" maxlength="240" rows="3"></textarea></div>
+      <button id="review-submit" class="btn btn-primary" type="submit">Record decision</button>
+    </form>
+  </div>
+</dialog>
+</main></div>
+<script src="/assets/js/reorder.js?v=mobile-orders-2"></script>
+<script src="/assets/js/app.js?v=purchase-orders-1"></script>
+</body></html>

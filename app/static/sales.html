@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sales · Smart Stock AI</title><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/demo.css"><link rel="stylesheet" href="/assets/css/pos-phone.css"><link rel="stylesheet" href="/assets/css/pos-camera.css"><link rel="stylesheet" href="/assets/css/workspace.css?v=light-workspace-1"><link rel="stylesheet" href="/assets/css/mobile-pos-items.css?v=1"><script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="sales">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+
+  <div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div><div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div><nav class="menu" aria-label="Main navigation"><a class="menu-item" href="/dashboard.html">Dashboard</a><a class="menu-item" href="/products.html">Product Maintenance</a><a class="menu-item" href="/stock-history.html">Stock History</a><a class="menu-item active" href="/sales.html" aria-current="page">Sales Transactions</a><a class="menu-item" href="/low-stock.html">Low Stock Alerts</a><a class="menu-item" href="/reports.html">Reports &amp; AI</a><a class="menu-item" href="/users.html">User Management</a></nav></aside>
+  <main class="main-content" id="main-content" tabindex="-1"><header class="topbar"><div><h2>Point of Sale</h2><p>Scan a barcode or select an item to start a sale.</p></div><button class="btn btn-logout" data-logout>Logout</button></header>
+    <p class="notice" id="page-message" aria-live="polite"></p><section class="panel-card mobile-pos-panel" aria-label="Point of sale">
+    <div class="pos-layout">
+      <div>
+    <section id="pos-product-picker" class="mobile-pos-picker" aria-labelledby="pos-products-heading" hidden>
+      <div class="mobile-pos-heading">
+        <h3 id="pos-products-heading">Choose an item</h3>
+        <a class="btn btn-secondary" href="#sale-barcode">Scan / SKU</a>
+      </div>
+      <label for="pos-product-search">Search by name or barcode</label>
+      <input id="pos-product-search" type="search" placeholder="Hal. Milo o PH-MILO" autocomplete="off">
+      <div id="pos-product-categories" class="mobile-filter-chips" aria-label="Product categories"></div>
+      <p id="pos-product-count" class="muted-text" role="status"></p>
+      <p id="pos-product-feedback" class="notice" role="status"></p>
+      <p id="pos-product-empty" class="mobile-catalog-empty muted-text" hidden>No items match your search.</p>
+      <div id="pos-product-grid" class="mobile-pos-product-grid"></div>
+    </section>
+    <fieldset class="mobile-pos-scan">
+      <legend>Barcode checkout</legend>
+      <div class="pos-camera-actions">
+        <button id="pc-camera-start" class="btn btn-secondary" type="button" aria-controls="pc-camera-panel" aria-expanded="false" disabled>Use PC camera</button>
+        <button id="scanner-app-start" class="btn btn-secondary" type="button" aria-controls="scanner-app-guide" aria-expanded="false" disabled>Use scanner app</button>
+      </div>
+    <section id="pc-camera-panel" class="pos-camera-panel" aria-label="PC camera scanner" hidden>
+      <p id="pc-camera-status" class="notice" role="status"></p>
+      <div id="pc-camera-device-field" class="field" hidden>
+        <label for="pc-camera-device">Camera</label><select id="pc-camera-device"></select>
+      </div>
+      <div id="pc-camera-preview" class="pos-camera-preview" hidden>
+        <video id="pc-camera-video" autoplay muted playsinline aria-label="Webcam barcode preview"></video>
+        <div class="pos-camera-guide" aria-hidden="true"></div>
+      </div>
+      <div class="pos-camera-actions">
+        <button id="pc-camera-next" class="btn btn-primary" type="button" hidden>Scan next</button>
+        <button id="pc-camera-retry" class="btn btn-secondary" type="button" hidden>Retry barcode</button>
+        <button id="pc-camera-stop" class="btn btn-tertiary" type="button">Close scanner</button>
+      </div>
+    </section>
+    <section id="scanner-app-guide" class="pos-phone-panel" aria-label="Barcode to PC" hidden>
+      <p><strong>Barcode to PC</strong></p>
+      <p>Pair the iPhone with the Barcode to PC Server, then choose <strong>Barcode + Enter</strong> in the app. Keep the Barcode / SKU field focused and wait for the item to appear in the cart before scanning again.</p>
+    </section>
+    <div class="panel-form">
+      <label for="sale-barcode">Barcode / SKU</label><input id="sale-barcode" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <p class="muted-text" id="scan-preview" aria-live="polite">Scan a barcode or type it and press Enter.</p>
+      <div class="form-row"><div><label for="sale-quantity">Quantity</label><input id="sale-quantity" type="number" min="1" max="10000" value="1"></div><div class="align-end"><button id="add-cart-item" class="btn btn-secondary" type="button">Add to cart</button></div></div>
+        </div>
+    </fieldset>
+      </div>
+      <section class="pos-cart" id="pos-cart-panel" aria-label="Order summary">
+        <h4>Order summary</h4>
+        <div id="cart-table" class="table-responsive"></div>
+        <p id="cart-breakdown" class="muted-text" aria-live="polite"></p>
+        <p class="pos-total"><strong id="cart-total">Total ₱0.00</strong></p>
+        <div class="checkout-row"><label for="discount-type">Discount type</label><select id="discount-type"><option value="none">None</option><option value="pwd">PWD</option><option value="senior">Senior Citizen</option></select><label for="discount-reference">Optional discount note</label><input id="discount-reference" maxlength="40" placeholder="Enter a non-sensitive note"><button id="complete-sale" class="btn btn-primary" type="button" disabled>Complete sale</button></div>
+        <p class="muted-text small-note"></p>
+      </section>
+    </div></section>
+    <button id="mobile-cart-open" class="mobile-cart-open" type="button" aria-haspopup="dialog" aria-controls="mobile-pos-cart" hidden>
+      <span><strong>View cart</strong><small id="mobile-cart-count">0 units</small></span><strong id="mobile-cart-price">₱0.00</strong>
+    </button>
+    <dialog id="mobile-pos-cart" class="mobile-cart-dialog" aria-labelledby="mobile-pos-cart-title">
+      <div class="mobile-cart-heading"><h3 id="mobile-pos-cart-title">Cart</h3><button type="button" class="btn btn-secondary" id="mobile-cart-close">Close</button></div>
+      <p id="mobile-cart-result" class="notice" role="status"></p>
+      <div id="mobile-cart-content"></div>
+    </dialog>
+    <section class="panel-card"><div class="panel-header"><div><h3>Sales history</h3><p class="muted-text">Review checkout records and imported sales history.</p></div></div>
+      <form id="sales-filter-form" class="filter-row">
+        <div><label for="sales-type-filter">Sale type</label><select id="sales-type-filter"><option value="">All sales</option><option value="general">General sales</option><option value="seasonal">Seasonal sales</option></select></div>
+        <div><label for="sales-date-from">From</label><input id="sales-date-from" type="date"></div>
+        <div><label for="sales-date-to">Through</label><input id="sales-date-to" type="date"></div>
+        <button class="btn btn-secondary" type="submit">Filter sales</button>
+      </form>
+      <p class="notice" id="sales-history-message" aria-live="polite"></p>
+      <div class="table-responsive" id="recent-sales"></div>
+    </section>
+    <section class="panel-card"><div class="panel-header"><h3>Best sellers · last 30 days</h3></div><div class="table-responsive" id="best-sellers"></div></section>
+    <section class="panel-card"><div class="panel-header"><h3>Product monitoring</h3><span class="muted-text" id="sales-model-label"></span></div><div class="table-responsive" id="sales-ai-table"></div></section>
+  </main></div>
+  <script src="/assets/js/vendor/zxing-browser.min.js"></script>
+  <script src="/assets/js/pos-camera.js?v=4"></script>
+  <script src="/assets/js/app.js?v=light-workspace-1"></script>
+  <script src="/assets/js/mobile-pos-items.js?v=2"></script>
+</body></html>

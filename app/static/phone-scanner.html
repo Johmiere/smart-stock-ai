@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Phone barcode scanner · Smart Stock AI</title>
+  <link rel="stylesheet" href="/assets/css/phone-scanner.css?v=3">
+  <script defer src="/assets/js/phone-scanner.js?v=3"></script>
+</head>
+<body>
+  <main class="scanner">
+    <header>
+      <p class="brand">Smart Stock AI</p>
+      <h1>Phone barcode scanner</h1>
+    </header>
+    <p id="scanner-connection" class="connection" role="status">Scanner page loaded. Checking the pairing link…</p>
+    <label id="scanner-camera-choice" hidden>Camera <select id="scanner-camera-device"></select></label>
+    <div id="scanner-preview" class="preview" hidden>
+      <video id="scanner-video" autoplay muted playsinline aria-label="Barcode camera preview"></video>
+      <div class="viewfinder" aria-hidden="true"></div>
+    </div>
+    <p id="scanner-message" class="message" role="status" aria-atomic="true"></p>
+    <div class="actions">
+      <button id="scanner-connect" type="button" hidden>Reconnect</button>
+      <button id="scanner-start" type="button" hidden>Start camera</button>
+      <button id="scanner-next" type="button" hidden>Scan next</button>
+      <button id="scanner-retry" type="button" hidden>Retry sending barcode</button>
+      <button id="scanner-stop" type="button" class="secondary" hidden>Stop camera</button>
+    </div>
+    <details id="scanner-manual" hidden>
+      <summary>Type barcode instead</summary>
+      <form id="scanner-form" method="post" novalidate>
+        <label for="scanner-barcode">Barcode</label>
+        <input id="scanner-barcode" type="text" maxlength="50" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="send" required>
+        <button id="scanner-send" type="submit">Send barcode</button>
+      </form>
+    </details>
+    <noscript>Enable JavaScript to use the phone scanner.</noscript>
+  </main>
+</body>
+</html>

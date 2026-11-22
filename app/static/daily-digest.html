@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Digest · Smart Stock AI</title><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/demo.css"><link rel="stylesheet" href="/assets/css/workspace.css?v=defense-branded-1"><script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-insights.css?v=1"><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="daily-digest">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+<div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div><div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div><nav class="menu" aria-label="Main navigation"><a class="menu-item" href="/dashboard.html">Dashboard</a><a class="menu-item" href="/products.html">Product Maintenance</a><a class="menu-item" href="/stock-history.html">Stock History</a><a class="menu-item" href="/sales.html">Sales Transactions</a><a class="menu-item" href="/low-stock.html">Low Stock Alerts</a><a class="menu-item" href="/reports.html">Reports &amp; AI</a><a class="menu-item" href="/users.html">User Management</a><a class="menu-item active" href="/daily-digest.html" aria-current="page">Daily Digest</a></nav></aside><main class="main-content" id="main-content" tabindex="-1">
+<header class="topbar"><div><h2>Daily Digest</h2><p id="digest-meta">Defense trial · Synthetic data</p></div><button class="btn btn-logout" data-logout>Logout</button></header>
+<p id="page-message" class="notice" role="status"></p>
+<section class="digest-hero" aria-labelledby="digest-greeting">
+<div><span class="digest-greeting" id="digest-date"></span><h3 id="digest-greeting">Welcome!</h3><p id="digest-store-caption">See what needs attention in your store today.</p></div>
+<a class="btn btn-primary" href="/sales.html"><span aria-hidden="true">+</span><span class="digest-shortcut-label">Start a sale</span></a>
+</section>
+<section class="digest-summary" aria-label="Store totals">
+<article class="digest-owner-stat" hidden><p>Net sales</p><strong id="digest-net-sales">—</strong><small>After discounts · 28 days</small></article>
+<article class="digest-owner-stat" hidden><p>Gross profit</p><strong id="digest-gross-profit">—</strong><small>Last 28 days</small></article>
+<article><p><span class="digest-alert-icon" aria-hidden="true">↓</span>Low stock</p><strong id="digest-low-count">—</strong><small>Products to review</small></article>
+<article><p><span class="digest-alert-icon" aria-hidden="true">◷</span>Near expiry</p><strong id="digest-expiry-count">—</strong><small>Products to review</small></article>
+</section>
+<section class="panel-card mobile-ai-panel"><div class="panel-header"><div><h3>What needs attention today?</h3><p class="muted-text">Review your most urgent inventory tasks.</p></div><span class="mobile-ai-badge"><span aria-hidden="true">✦</span> AI &amp; inventory</span></div><ol id="digest-actions" class="stock-alert-list"></ol></section>
+<div class="digest-performance-grid">
+<section class="panel-card"><div class="panel-header"><div><h3>Sales this week</h3><p class="muted-text">Units sold each day</p></div><span class="section-meta">7 days</span></div><ol class="digest-sales-bars" id="digest-sales-bars" aria-label="Units sold in the last seven days"></ol></section>
+<section class="panel-card mobile-ai-panel" id="digest-peso-brief" hidden>
+<div class="panel-header"><h3>Peso impact</h3><span class="mobile-ai-badge"><span aria-hidden="true">✦</span> Simulation</span></div>
+<strong class="digest-impact-value" id="digest-peso-value">—</strong><p class="muted-text" id="digest-peso-note">Modeled cost difference</p>
+<a href="#defense-simulation" class="btn btn-secondary">View simulation</a>
+</section>
+</div>
+<section id="defense-profile" class="panel-card" hidden>
+<div class="panel-header"><div><h3>Sales data and ABC–XYZ profile</h3><p id="defense-profile-note" class="muted-text"></p></div></div>
+<details><summary>Review SKU history and segmentation</summary><div id="defense-profile-table" class="table-responsive"></div></details>
+</section>
+<section id="defense-simulation" class="panel-card" hidden>
+<div class="panel-header"><div><h3>What-if and peso impact</h3><p class="muted-text">Synthetic 84-day holdout comparing a fixed rule with adaptive reorder.</p></div></div>
+<form id="defense-promo" class="filter-row"><div><label for="promo">3-in-1 coffee promo demand lift (%)</label><input id="promo" type="number" value="30" min="0" max="150" required></div><button type="submit" class="btn btn-primary">Run simulation</button><button id="simulation-export" type="button" class="btn btn-secondary" disabled>Export CSV</button></form>
+<p id="simulation-message" class="notice" role="status"></p>
+<p class="report-callout" id="simulation-impact"></p>
+<div id="simulation-totals" class="table-responsive"></div>
+<p id="simulation-data" class="muted-text"></p>
+<details><summary>Show per-SKU results</summary><div id="simulation-skus" class="table-responsive"></div></details>
+</section>
+<section class="panel-card mobile-ai-panel" id="daily-assistant"><div class="panel-header"><div><h3>AI Assistant</h3><p class="muted-text">Get answers from your store records.</p></div><span class="mobile-ai-badge"><span aria-hidden="true">✦</span> AI</span></div>
+<div class="mobile-ai-prompts" aria-label="Sample questions">
+<button type="button" class="btn btn-secondary" data-assistant-prompt="How much stock is available for PH-MILO?">MILO stock</button>
+<button type="button" class="btn btn-secondary" data-assistant-prompt="Which products expire soon?">Expiring soon</button>
+<button type="button" class="btn btn-secondary" data-assistant-prompt="What should I order?">What should I order?</button>
+</div>
+<form id="defense-ask" class="assistant-form"><input id="defense-question" maxlength="400" aria-label="Store question" placeholder="Type your question…" required><button class="btn btn-primary" type="submit">Ask</button>
+<div id="defense-groq-option" hidden><label for="defense-use-groq"><input id="defense-use-groq" type="checkbox"> Ask via Groq for this question</label><p class="muted-text">Only the question text is sent to Groq. Inventory lookup stays local.</p></div>
+</form>
+<div class="mobile-ai-response"><p id="defense-answer" class="assistant-answer" role="status"></p><p id="defense-latency" class="muted-text"></p><ol id="defense-sources"></ol></div></section>
+</main></div><script src="/assets/js/defense-trial.js?v=mobile-2"></script><script src="/assets/js/app.js?v=defense-trial-1"></script></body></html>

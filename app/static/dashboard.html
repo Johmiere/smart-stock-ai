@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard · Smart Stock AI</title><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/demo.css"><link rel="stylesheet" href="/assets/css/workspace.css?v=day-1"><script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="dashboard">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+
+  <div class="app-shell">
+    <aside class="sidebar"><div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div><div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div><nav class="menu" aria-label="Main navigation"><a class="menu-item active" href="/dashboard.html" aria-current="page">Dashboard</a><a class="menu-item" href="/products.html">Product Maintenance</a><a class="menu-item" href="/stock-history.html">Stock History</a><a class="menu-item" href="/sales.html">Sales Transactions</a><a class="menu-item" href="/low-stock.html">Low Stock Alerts</a><a class="menu-item" href="/reports.html">Reports &amp; AI</a><a class="menu-item" href="/users.html">User Management</a></nav></aside>
+    <main class="main-content" id="main-content" tabindex="-1">
+      <header class="topbar"><div><h2>Store dashboard</h2><p id="store-name">Store overview</p></div><button class="btn btn-logout" data-logout>Logout</button></header>
+      <p id="page-message" class="notice" role="status"></p>
+      <section class="digest-hero" aria-labelledby="mobile-dashboard-title">
+        <div><h3 id="mobile-dashboard-title">Welcome!</h3><p>Open the Daily Digest to see sales and tasks that need attention.</p></div>
+        <a class="btn btn-primary" href="/daily-digest.html">Daily Digest</a>
+      </section>
+      <nav class="store-shortcuts" aria-label="Store shortcuts">
+        <a class="store-shortcut store-shortcut-primary" href="/sales.html"><strong>Open checkout</strong><span>Scan and record a sale</span></a>
+        <a class="store-shortcut" href="/products.html"><strong>Find a product</strong><span>Search by name or barcode</span></a>
+        <a class="store-shortcut" href="/low-stock.html"><strong>Reorder queue</strong><span>See what needs replenishing</span></a>
+        <a class="store-shortcut" href="/reports.html"><strong>View reports</strong><span>Review sales and stock decisions</span></a>
+      </nav>
+      <div class="metrics-grid">
+        <article class="metric-card"><p>Units sold</p><h2 id="weekly-sales">—</h2><span class="metric-tag">Last 7 days</span></article>
+        <article class="metric-card"><p>Sale lines</p><h2 id="weekly-orders">—</h2><span class="metric-tag">Last 7 days</span></article>
+        <article class="metric-card"><p>Products</p><h2 id="products-count">—</h2><span class="metric-tag">Active catalog</span></article>
+        <article class="metric-card"><p>Units on hand</p><h2 id="stock-units">—</h2><span class="metric-tag">Across all batches</span></article>
+      </div>
+      <div class="dashboard-grid">
+        <section class="panel-card inventory-overview">
+          <div class="panel-header"><div><h3>Stock to review</h3><p class="muted-text" id="model-label">Loading forecast status…</p></div><a class="panel-link" href="/low-stock.html">Open alerts</a></div>
+          <dl class="watch-stats">
+            <div><dt>For reorder review</dt><dd id="reorder-count">—</dd></div>
+            <div><dt>Expiry alerts</dt><dd id="expiry-alert-count">—</dd></div>
+            <div><dt>Off-season products</dt><dd id="off-season-count">—</dd></div>
+          </dl>
+        </section>
+        <section class="panel-card dashboard-sales"><div class="panel-header"><div><h3>Sales activity</h3><p class="muted-text">Units sold each day</p></div><span class="section-meta">Last 7 days</span></div><div id="sales-chart" class="simple-chart" aria-label="Daily units sold"></div></section>
+      </div>
+      <section class="panel-card">
+        <div class="panel-header"><div><h3>Product decisions</h3><p class="muted-text">Review stock, seasonal demand, and expiry for each item.</p></div><a class="panel-link" href="/reports.html#decision">Open reports</a></div>
+        <div id="ai-table-wrap" class="table-responsive"></div>
+      </section>
+      <section class="panel-card">
+        <div class="panel-header"><div><h3>Inventory assistant</h3><p class="muted-text">Ask about a product by name or barcode.</p></div><span class="section-meta" id="assistant-provider" hidden></span></div>
+        <form id="assistant-form" class="assistant-form"><input id="assistant-question" aria-label="Inventory question" placeholder="Why is this product off-season?" maxlength="1000" required><button class="btn btn-primary" type="submit">Ask assistant</button></form>
+        <p id="assistant-answer" class="assistant-answer" aria-live="polite"></p>
+        <details id="assistant-source" hidden><summary>Show retrieved evidence</summary><pre id="assistant-data"></pre></details>
+      </section>
+    </main>
+  </div>
+  <script src="/assets/js/app.js?v=light-workspace-1"></script>
+</body>
+</html>

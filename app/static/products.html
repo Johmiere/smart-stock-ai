@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Items · Smart Stock AI</title><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/demo.css"><link rel="stylesheet" href="/assets/css/workspace.css?v=light-workspace-1"><link rel="stylesheet" href="/assets/css/mobile-pos-items.css?v=1"><script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="products">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+
+  <div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div><div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div><nav class="menu" aria-label="Main navigation"><a class="menu-item" href="/dashboard.html">Dashboard</a><a class="menu-item active" href="/products.html" aria-current="page">Product Maintenance</a><a class="menu-item" href="/stock-history.html">Stock History</a><a class="menu-item" href="/sales.html">Sales Transactions</a><a class="menu-item" href="/low-stock.html">Low Stock Alerts</a><a class="menu-item" href="/reports.html">Reports &amp; AI</a><a class="menu-item" href="/users.html">User Management</a></nav></aside>
+  <main class="main-content" id="main-content" tabindex="-1"><header class="topbar"><div><h2>Items</h2><p>Find products, check stock, and update prices.</p></div><button class="btn btn-logout" data-logout>Logout</button></header>
+    <p class="notice" id="page-message" role="status"></p>
+    <section class="panel-card" aria-labelledby="catalog-heading">
+      <div class="panel-header">
+        <h3 id="catalog-heading">Products</h3>
+        <div class="catalog-actions">
+          <a class="btn btn-secondary" href="#adjust-stock-panel">Adjust stock</a>
+          <a id="catalog-add-product" class="btn btn-primary" href="#add-product-panel" hidden>Add product</a>
+        </div>
+      </div>
+      <div class="catalog-filters" role="group" aria-label="Product filters">
+        <div><label for="catalog-search">Search products</label><input id="catalog-search" type="search" placeholder="Name or barcode" autocomplete="off"></div>
+        <div><label for="catalog-season">Season status</label><select id="catalog-season"><option value="">All products</option><option value="general">General products</option><option value="in_season">In season</option><option value="off_season">Off-season</option></select></div>
+        <button id="catalog-clear" class="btn btn-secondary" type="button" disabled>Clear filters</button>
+      </div>
+      <div class="mobile-filter-chips" id="item-status-chips" aria-label="Filter by stock status" hidden>
+        <button type="button" data-item-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-item-filter="low" aria-pressed="false">Low stock</button>
+        <button type="button" data-item-filter="expiry" aria-pressed="false">Expiring soon</button>
+        <button type="button" data-item-filter="slow" aria-pressed="false">No sales · 28 days</button>
+      </div>
+      <p id="product-count" class="muted-text catalog-count" role="status"></p>
+      <div class="table-responsive" id="products-table"></div>
+      <p id="mobile-item-empty" class="mobile-catalog-empty muted-text" hidden>No items match this filter. Try a different status.</p>
+    </section>
+    <div class="page-grid"><section class="panel-card" id="add-product-panel" tabindex="-1" aria-labelledby="add-product-heading" hidden><div class="panel-header"><h3 id="add-product-heading">Add product</h3></div><form id="product-form" class="panel-form">
+      <div class="form-row">
+        <div><label for="product-barcode">Barcode / SKU</label><input id="product-barcode" maxlength="50" pattern="[A-Za-z0-9_\-]{3,50}" autocomplete="off" spellcheck="false" aria-describedby="product-barcode-status" required></div>
+        <div class="align-end"><button class="btn btn-secondary" id="product-barcode-scan" type="button">Scan barcode</button></div>
+      </div>
+      <p class="notice" id="product-barcode-status" role="status"></p>
+      <label for="product-name">Product name</label><input id="product-name" maxlength="100" required>
+      <div class="form-row"><div><label for="product-category">Category</label><select id="product-category"><option>Food</option><option>Non-Food</option><option>Beverage</option><option>Other</option></select></div><div><label for="product-unit">Unit</label><select id="product-unit"><option>pieces</option><option>grams</option><option>kilograms</option><option>milliliters</option><option>liters</option></select></div></div>
+      <div class="form-row"><div><label for="product-price">Current selling price</label><input id="product-price" type="number" min="0" max="99999999.99" step="0.01" value="0" required></div><div><label for="product-projected-price">Projected selling price (optional)</label><input id="product-projected-price" name="projected_price" type="number" min="0" max="99999999.99" step="0.01"></div></div>
+      <div id="product-cost-field" hidden><label for="product-cost">Purchase cost per unit (optional)</label><input id="product-cost" name="unit_cost" type="number" min="0" max="99999999.99" step="0.01" aria-describedby="product-cost-help" disabled><p class="muted-text" id="product-cost-help">Enter what the store paid per selling unit. Leave blank if unknown.</p></div>
+      <div class="form-row"><div><label for="product-season-start">Season starts</label><select id="product-season-start" name="season_start_month" data-season-month><option value="">No seasonal window</option></select></div><div><label for="product-season-end">Season ends</label><select id="product-season-end" name="season_end_month" data-season-month><option value="">No seasonal window</option></select></div></div>
+      <label for="product-quantity">Starting quantity</label><input id="product-quantity" type="number" min="0" max="1000000" value="0">
+      <label for="product-expiry">Initial batch expiry (optional)</label><input id="product-expiry" type="date">
+      <div class="form-row"><div><label for="reorder-level">Reorder level</label><input id="reorder-level" type="number" min="0" value="0"></div><div><label for="lead-time">Supplier lead time (days)</label><input id="lead-time" type="number" min="0" value="0"></div></div>
+      <label for="safety-stock">Safety stock (units)</label><input id="safety-stock" type="number" min="0" value="0">
+      <p class="notice" id="product-form-message" role="status"></p>
+      <button class="btn btn-primary" type="submit">Save product</button>
+    </form></section>
+    <section class="panel-card" id="adjust-stock-panel" tabindex="-1" aria-labelledby="adjust-stock-heading"><div class="panel-header"><h3 id="adjust-stock-heading">Adjust stock</h3></div><form id="adjust-form" class="panel-form">
+      <label for="adjust-product">Product</label><select id="adjust-product" required></select>
+      <div class="form-row"><div><label for="adjust-action">Action</label><select id="adjust-action"><option value="increase">+ Add stock</option><option value="decrease">− Reduce stock</option></select></div><div><label for="adjust-quantity">Quantity</label><input id="adjust-quantity" type="number" min="1" max="1000000" required></div></div>
+      <label for="adjust-expiry">Expiry date for received batch (optional)</label><input id="adjust-expiry" type="date">
+      <label for="adjust-notes">Reason / notes</label><input id="adjust-notes" maxlength="180" placeholder="Supplier delivery, damaged item…">
+      <p class="notice" id="adjust-stock-message" role="status"></p>
+      <button class="btn btn-primary" type="submit">Apply stock change</button>
+    </form></section></div>
+    <section class="panel-card" id="product-detail-panel" aria-labelledby="product-detail-name" hidden>
+      <div class="panel-header"><h3 id="product-detail-name" tabindex="-1"></h3><button class="btn btn-secondary product-action" id="product-detail-close" type="button">Close details</button></div>
+      <dl class="product-overview" id="product-overview"></dl>
+      <section class="mobile-item-evidence" id="mobile-item-evidence" aria-labelledby="item-evidence-title" hidden>
+        <h4 id="item-evidence-title">Stock and forecast</h4>
+        <div id="item-evidence-content" class="mobile-evidence-metrics"></div>
+        <div class="catalog-actions">
+          <a class="btn btn-secondary" id="item-stock-link" href="/stock-history.html">Stock history</a>
+          <a class="btn btn-secondary" id="item-forecast-link" href="/reports.html#decision">AI forecast details</a>
+        </div>
+      </section>
+      <form id="product-maintenance-form" class="panel-form" hidden>
+        <div class="form-row"><div><label for="maintenance-price">Current selling price</label><input id="maintenance-price" name="price" type="number" min="0" max="99999999.99" step="0.01" required></div><div><label for="maintenance-projected-price">Projected selling price (optional)</label><input id="maintenance-projected-price" name="projected_price" type="number" min="0" max="99999999.99" step="0.01"></div></div>
+        <div id="maintenance-cost-field" hidden><label for="maintenance-cost">Purchase cost per unit (optional)</label><input id="maintenance-cost" name="unit_cost" type="number" min="0" max="99999999.99" step="0.01" aria-describedby="maintenance-cost-help" disabled><p class="muted-text" id="maintenance-cost-help">Changes apply to future checkouts.</p></div>
+        <div class="form-row"><div><label for="maintenance-season-start">Season starts</label><select id="maintenance-season-start" name="season_start_month" data-season-month><option value="">No seasonal window</option></select></div><div><label for="maintenance-season-end">Season ends</label><select id="maintenance-season-end" name="season_end_month" data-season-month><option value="">No seasonal window</option></select></div></div>
+        <p class="muted-text">Projected price is for planning. Checkout uses the current selling price.</p>
+        <p class="notice" id="product-detail-message" role="status"></p>
+        <button class="btn btn-primary" type="submit">Save product details</button>
+      </form>
+    </section>
+  </main></div><script src="/assets/js/app.js?v=light-workspace-1"></script><script src="/assets/js/mobile-pos-items.js?v=2"></script>
+</body></html>

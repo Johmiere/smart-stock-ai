@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports &amp; AI · Smart Stock AI</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/demo.css">
+  <link rel="stylesheet" href="/assets/css/workspace.css?v=light-workspace-1">
+  <link rel="stylesheet" href="/assets/css/mobile-insights.css?v=1">
+<script src="/assets/js/theme.js?v=1"></script><script src="/assets/js/workspace-nav.js?v=1" defer></script><link rel="stylesheet" href="/assets/css/mobile-shell.css?v=1"><script src="/assets/js/mobile-shell.js?v=2" defer></script></head>
+<body class="admin-body" data-page="reports">
+<a href="#main-content" class="workspace-skip">Skip to main content</a>
+<div id="workspace-loading" class="workspace-loading" role="status" hidden>
+  <span class="workspace-loading-track" aria-hidden="true"></span>
+  <span id="workspace-loading-label" class="workspace-loading-label"></span>
+</div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo">SS</div><div><h1>Smart Stock AI</h1><p>Inventory &amp; POS</p></div></div>
+      <div class="profile-card"><div class="profile-avatar" id="avatar">S</div><div><strong id="profile-name">Loading…</strong><p id="profile-role">Store</p></div></div>
+      <nav class="menu" aria-label="Main navigation">
+        <a class="menu-item" href="/dashboard.html">Dashboard</a>
+        <a class="menu-item" href="/products.html">Product Maintenance</a>
+        <a class="menu-item" href="/stock-history.html">Stock History</a>
+        <a class="menu-item" href="/sales.html">Sales Transactions</a>
+        <a class="menu-item" href="/low-stock.html">Low Stock Alerts</a>
+        <a class="menu-item active" href="/reports.html" aria-current="page">Reports &amp; AI</a>
+        <a class="menu-item" href="/users.html">User Management</a>
+      </nav>
+    </aside>
+    <main class="main-content" id="main-content" tabindex="-1">
+      <header class="topbar">
+        <div><h2>Reports &amp; AI</h2><p>Review profit, sales history, and forecast accuracy.</p></div>
+        <button class="btn btn-logout" data-logout>Logout</button>
+      </header>
+      <p id="page-message" class="notice" role="status"></p>
+      <nav class="section-links mobile-report-nav" aria-label="Report sections">
+        <a id="sales-performance-link" href="#sales-performance" hidden>Sales &amp; gross profit</a>
+        <a href="#decision">Product decision</a><a href="#evaluation">Forecast evaluation</a>
+        <a href="#sources">Grocery data</a><a href="#providers">AI services</a>
+      </nav>
+
+      <section class="panel-card" id="sales-performance" aria-labelledby="sales-performance-heading" hidden>
+        <div class="panel-header">
+          <div><h3 id="sales-performance-heading">Sales &amp; gross profit</h3><p class="muted-text">POS revenue after discounts, compared with the previous 28 days.</p></div>
+          <span class="section-meta">Rolling 28 days</span>
+        </div>
+        <p id="sales-performance-message" class="notice" role="status"></p>
+        <div id="sales-performance-result" hidden>
+          <p id="sales-performance-dates" class="muted-text performance-dates"></p>
+          <div id="sales-performance-totals" class="performance-totals"></div>
+          <p id="sales-performance-coverage" class="report-callout" hidden></p>
+          <h4 class="report-heading">Weekly trend</h4>
+          <div id="sales-performance-weeks" class="performance-weeks"></div>
+          <details class="performance-daily"><summary>Show daily figures</summary><div id="sales-performance-days" class="table-responsive"></div></details>
+          <section id="sales-performance-losses" hidden>
+            <h4 class="report-heading">Products sold at a gross loss</h4>
+            <p class="muted-text">Review the selling price, discounts, or supplier cost of these products.</p>
+            <div id="sales-performance-loss-list" class="table-responsive"></div>
+          </section>
+          <p class="small-note performance-note">Gross profit is sales after discounts minus the cost of the units sold, before rent, wages, and other operating expenses.</p>
+        </div>
+      </section>
+
+      <section class="panel-card mobile-insight-panel" id="decision">
+        <div class="panel-header"><div><h3>Product decision</h3><p class="muted-text">See how the selling calendar, prior seasons, and batch expiry affect the next action.</p></div></div>
+        <form id="decision-form" class="report-form">
+          <div class="field"><label for="report-product">Product</label><select id="report-product" required><option value="">Select a product</option></select></div>
+          <button type="submit" class="btn btn-primary" id="decision-button">Show evidence</button>
+        </form>
+        <p id="decision-message" class="notice" aria-live="polite"></p>
+        <div id="decision-result" hidden>
+          <div class="fact-grid" id="decision-facts"></div>
+          <div class="report-callout" id="decision-explanation"></div>
+          <p id="decision-expiry" class="muted-text report-line"></p>
+          <div id="season-history" hidden>
+            <h4 class="report-heading">Comparable selling seasons</h4>
+            <p id="season-history-note" class="muted-text report-line"></p>
+            <div id="season-history-table" class="table-responsive"></div>
+            <p id="season-test" class="report-line"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-card mobile-insight-panel" id="evaluation">
+        <div class="panel-header">
+          <div><h3>Forecast evaluation</h3><p class="muted-text">Compare methods using later weeks that were held out of training.</p></div>
+          <button type="button" class="btn btn-secondary" id="evaluation-run" disabled>Run model comparison</button>
+        </div>
+        <p id="evaluation-message" class="notice" role="status">Select a product above to begin.</p>
+        <div id="evaluation-results" hidden>
+          <div id="evaluation-comparison" class="mobile-evaluation-comparison" hidden></div>
+          <div class="fact-grid" id="evaluation-facts"></div>
+          <div id="evaluation-chart" class="forecast-chart" aria-label="Forecast error by method"></div>
+          <section id="evaluation-trend-panel" class="mobile-evaluation-trend" aria-labelledby="evaluation-trend-heading" hidden>
+            <h4 id="evaluation-trend-heading">Forecast accuracy trend</h4>
+            <p class="muted-text">Weekly holdout mean absolute error. Lower is better.</p>
+            <ul id="evaluation-trend-legend" class="mobile-evaluation-legend" aria-label="Chart legend"></ul>
+            <div class="mobile-evaluation-canvas"><canvas id="evaluation-trend" role="img" aria-label="Weekly holdout forecast errors"></canvas></div>
+            <details><summary>Show weekly chart data</summary><div id="evaluation-weekly" class="table-responsive"></div></details>
+          </section>
+          <h4 class="report-heading">Model benchmark</h4>
+          <div id="evaluation-table" class="table-responsive"></div>
+          <details><summary>Show training and testing dates</summary><div id="evaluation-folds" class="table-responsive"></div></details>
+          <details><summary>Show daily actuals and predictions</summary><div id="evaluation-series" class="table-responsive"></div></details>
+          <p class="small-note">MAE and RMSE are measured in units per day. WAPE is relative to recorded units and is unavailable when the held-out total is zero.</p>
+        </div>
+        <p class="report-line"><a class="btn btn-secondary" href="/dashboard.html#assistant-form">Ask about regression</a></p>
+      </section>
+
+      <section class="panel-card" id="sources">
+        <div class="panel-header">
+          <div><h3>Grocery data</h3><p class="muted-text">Validate an authorized export and keep a record of where the forecast history came from.</p></div>
+          <a href="/api/imports/sales/template" class="btn btn-secondary" id="import-template" hidden>Download CSV template</a>
+        </div>
+        <p id="import-locked" class="muted-text">The store owner can preview and import sales exports.</p>
+        <div id="import-owner" hidden>
+          <form id="sales-import-form" class="report-import">
+            <div class="report-form">
+              <div class="field"><label for="data-source">Data source</label><select id="data-source">
+                <option value="partner_pos">Authorized grocery POS export</option>
+                <option value="public_benchmark">Public research benchmark</option>
+                <option value="test_data">Test data</option>
+              </select></div>
+              <div class="field"><label for="data-source-label">Source label</label><input id="data-source-label" maxlength="120" required placeholder="e.g. Partner Store A, 2024–2026"></div>
+              <div class="field"><label for="sales-csv">Sales CSV</label><input id="sales-csv" type="file" accept=".csv,text/csv" required></div>
+            </div>
+            <div class="button-row"><button class="btn btn-secondary" type="submit" id="import-preview">Preview file</button><button type="button" class="btn btn-primary" id="import-confirm" hidden>Import validated rows</button></div>
+          </form>
+          <p class="small-note">Columns are date, barcode, and qty_sold. Include a stable source_line_id for overlapping exports. Use product-level records with customer details removed.</p>
+          <p id="import-message" class="notice" role="status"></p>
+          <div id="import-result" hidden><div class="fact-grid" id="import-facts"></div><ul id="import-errors" class="report-list"></ul></div>
+          <h4 class="report-heading">Import history</h4>
+          <div id="import-history" class="table-responsive"></div>
+        </div>
+      </section>
+
+      <section class="panel-card mobile-insight-panel" id="providers">
+        <div class="panel-header"><div><h3>AI services</h3><p class="muted-text">Verify what can run on this computer and which service can answer the assistant.</p></div></div>
+        <div class="service-grid">
+          <article class="service-card"><h4>Chronos-Bolt</h4><span class="service-status" id="report-model-status">Checking…</span><strong id="report-model-name"></strong><p id="report-model-detail" class="muted-text"></p></article>
+          <article class="service-card"><h4>Groq Cloud</h4><span class="service-status" id="groq-status">Checking…</span><strong id="groq-model"></strong><p id="groq-detail" class="muted-text"></p><p id="groq-proof" class="service-proof" role="status" hidden></p><button type="button" class="btn btn-secondary" id="groq-test" hidden>Test Groq connection</button></article>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/assets/js/reports.js?v=mobile-insights-1"></script>
+  <script src="/assets/js/app.js?v=light-workspace-1"></script>
+</body>
+</html>
